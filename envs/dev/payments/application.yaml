@@ -4,10 +4,11 @@ kind: Application
 metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: ditvtvtvt/payments
+    argocd-image-updater.argoproj.io/payments.ignore-tags: '*'
     argocd-image-updater.argoproj.io/payments.update-strategy: semver
     argocd-image-updater.argoproj.io/write-back-method: git
   finalizers:
-    - resources-finalizer.argocd.argoproj.io
+  - resources-finalizer.argocd.argoproj.io
   name: payments-dev
   namespace: argocd
 spec:
@@ -16,30 +17,30 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: ssh://git@github.com/DITVTVTVT/k8s.git
-    targetRevision: main
-    path: helm-charts/payments
     helm:
       parameters:
-        - name: "replicaCount"
-          value: "2"
-        - name: "image.repository"
-          value: "ditvtvtvt/payments"
-        - name: "image.tag"
-          value: "0.1.1"
-        - name: "service.port"
-          value: "8080"
-        - name: "livenessProbe.httpGet.path"
-          value: "/healthz"
-        - name: "readinessProbe.httpGet.path"
-          value: "/healthz"
+      - name: replicaCount
+        value: '2'
+      - name: image.repository
+        value: ditvtvtvt/payments
+      - name: image.tag
+        value: 0.1.1
+      - name: service.port
+        value: '8080'
+      - name: livenessProbe.httpGet.path
+        value: /healthz
+      - name: readinessProbe.httpGet.path
+        value: /healthz
+    path: helm-charts/payments
+    repoURL: ssh://git@github.com/DITVTVTVT/k8s.git
+    targetRevision: main
   syncPolicy:
     automated:
+      allowEmpty: false
       prune: true
       selfHeal: true
-      allowEmpty: false
     syncOptions:
-      - Validate=true
-      - CreateNamespace=true
-      - PrunePropagationPolicy=foreground
-      - PruneLast=true
+    - Validate=true
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - PruneLast=true
