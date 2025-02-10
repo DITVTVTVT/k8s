@@ -16,7 +16,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    repoURL: ssh://git@github.com:DITVTVTVT/k8s.git
+    repoURL: ssh://git@github.com/DITVTVTVT/k8s.git
     targetRevision: main
     path: helm-charts/users
     helm:
