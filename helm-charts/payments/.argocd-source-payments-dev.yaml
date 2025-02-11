@@ -7,7 +7,7 @@ helm:
     value: ditvtvtvt/payments
     forcestring: false
   - name: image.tag
-    value: 2.5.3
+    value: 2.5.4
     forcestring: true
   - name: service.port
     value: "8080"
