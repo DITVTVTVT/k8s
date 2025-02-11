@@ -10,6 +10,7 @@ from github import Auth, Github
 # TODO: There is a lot of repeating code that you can refactor,
 # but I'll keep it as is because it's easier to follow and learn
 
+
 def pause(env, service,repo, branch):
     """Pause Continuous Delivery (C/D) of the service in the target environment."""
 
@@ -35,6 +36,7 @@ def pause(env, service,repo, branch):
     # Log the action that was performed
     print(f'Updated the "{file_path}" file in the "{branch}" branch of the "{repo.name}" remote repository')
 
+
 def resume(env, service, repo, branch):
     """Resume Continuous Delivery (C/D) of the service in the target environment."""
 
@@ -57,7 +59,6 @@ def resume(env, service, repo, branch):
     # Update the Application resource in the remote 'pause-<env>-<date>' branch of the repository
     repo.update_file(contents.path, f'Pause {service} in {env}.', app_yaml, contents.sha, branch=branch)
 
-
     # Log the action that was performed
     print(f'Updated the "{file_path}" file in the "{branch}" branch of the "{repo.name}" remote repository')
 
@@ -75,10 +76,11 @@ def get_versions(charts_dir,env, repo):
    for service in services:
        # Create a path for the file e.g. helm-charts/payments/.argocd-source-payments.yaml
        file_path = f'{service.path}/.argocd-source-{service.name}-{env}.yaml'
+       print(file_path)
 
        # Retrieve the content of the application from the remote "main" branch of the repository
        contents = repo.get_contents(file_path, ref=repo.default_branch)
-
+       print(contents)
        # Parse the YAML file and load it into a Python dictionary.
        params = yaml.safe_load(contents.decoded_content.decode())
 
@@ -107,6 +109,7 @@ def options():
 
     # Parse and return command-line arguments
     return parser.parse_args()
+
 
 def update_versions(env,versions, repo, branch):
     """Update the service versions to tne latest ones deployed in the specified environment."""
@@ -153,6 +156,7 @@ def update_versions(env,versions, repo, branch):
         # Log the action that was performed
         print(f'Updated the "{file_path}" file in the "{branch}" branch of the "{repo.name}" remote repository')
 
+
 def create_branch(repo,branch):
     """Create a new branch in the remote gitHub repository."""
 
@@ -165,6 +169,7 @@ def create_branch(repo,branch):
     # Log the action that was performed
     print(f'Created a "{branch}" branch in the "{repo.name}" remote repository')
 
+
 def create_pr(repo, branch, title):
     """Create a Pull Request in the remote GitHub repository."""
 
@@ -176,6 +181,7 @@ def create_pr(repo, branch, title):
 
     # Log the action that was performed
     print(f'Created a pull request in the "{repo.name}" remote repository')
+
 
 def get_repo(name):
     """Get GitHub repository by name"""
@@ -191,6 +197,7 @@ def get_repo(name):
 
     # return the GitHub repository
     return g.get_repo(name)
+
 
 def main():
     """Entrypoint to the Gitops script."""
